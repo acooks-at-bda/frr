@@ -25,7 +25,17 @@
 	"payload":"2001:db8:1000::2/128"
       },
       {
+	"type":"EIAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::2/128"
+      },
+      {
 	"type":"IAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::3/128"
+      },
+      {
+	"type":"EIAP",
 	"advRouter":"2.2.2.2",
 	"payload":"2001:db8:1000::3/128"
       },
@@ -35,7 +45,17 @@
 	"payload":"2001:db8:1000::4/128"
       },
       {
+	"type":"EIAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::4/128"
+      },
+      {
 	"type":"IAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::6/128"
+      },
+      {
+	"type":"EIAP",
 	"advRouter":"2.2.2.2",
 	"payload":"2001:db8:1000::6/128"
       },
@@ -45,7 +65,17 @@
 	"payload":"2001:db8:1000::5/128"
       },
       {
+	"type":"EIAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::5/128"
+      },
+      {
 	"type":"IAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::7/128"
+      },
+      {
+	"type":"EIAP",
 	"advRouter":"2.2.2.2",
 	"payload":"2001:db8:1000::7/128"
       },
@@ -55,7 +85,17 @@
 	"payload":"2001:db8:1000::9/128"
       },
       {
+	"type":"EIAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::9/128"
+      },
+      {
 	"type":"IAP",
+	"advRouter":"2.2.2.2",
+	"payload":"2001:db8:1000::8/128"
+      },
+      {
+	"type":"EIAP",
 	"advRouter":"2.2.2.2",
 	"payload":"2001:db8:1000::8/128"
       },
@@ -65,12 +105,27 @@
 	"payload":"7.7.7.7"
       },
       {
+	"type":"EIAR",
+	"advRouter":"2.2.2.2",
+	"payload":"7.7.7.7"
+      },
+      {
 	"type":"IAR",
 	"advRouter":"2.2.2.2",
 	"payload":"8.8.8.8"
       },
       {
+	"type":"EIAR",
+	"advRouter":"2.2.2.2",
+	"payload":"8.8.8.8"
+      },
+      {
 	"type":"IAR",
+	"advRouter":"2.2.2.2",
+	"payload":"9.9.9.9"
+      },
+      {
+	"type":"EIAR",
 	"advRouter":"2.2.2.2",
 	"payload":"9.9.9.9"
       },
@@ -82,7 +137,7 @@
       {
 	"type":"EINP",
 	"advRouter":"1.1.1.1",
-	"payload":"2001:db8:1000::1"
+	"payload":"2001:db8:1000::1/128"
       }
     ]
   }
@@ -120,7 +175,17 @@
       "payload":"2001:db8:1000::1/128"
     },
     {
+      "type":"EASE",
+      "advRouter":"1.1.1.1",
+      "payload":"2001:db8:1000::1/128"
+    },
+    {
       "type":"ASE",
+      "advRouter":"7.7.7.7",
+      "payload":"2001:db8:1000::7/128"
+    },
+    {
+      "type":"EASE",
       "advRouter":"7.7.7.7",
       "payload":"2001:db8:1000::7/128"
     },
@@ -130,7 +195,17 @@
       "payload":"2001:db8:1000::8/128"
     },
     {
+      "type":"EASE",
+      "advRouter":"8.8.8.8",
+      "payload":"2001:db8:1000::8/128"
+    },
+    {
       "type":"ASE",
+      "advRouter":"9.9.9.9",
+      "payload":"2001:db8:1000::9/128"
+    },
+    {
+      "type":"EASE",
       "advRouter":"9.9.9.9",
       "payload":"2001:db8:1000::9/128"
     }
