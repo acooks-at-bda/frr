@@ -690,7 +690,7 @@ void ospf6_asbr_lsa_add(struct ospf6_lsa *lsa)
 		 * specify an intra-area path through the LSA's originating
 		 * NSSA".
 		 */
-		if (ntohs(lsa->header->type) == OSPF6_LSTYPE_TYPE_7
+		if ((type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7)
 		    && (asbr_entry->path.area_id != oa->area_id
 			|| asbr_entry->path.type != OSPF6_PATH_TYPE_INTRA)) {
 			if (IS_OSPF6_DEBUG_EXAMIN(AS_EXTERNAL))
@@ -716,7 +716,7 @@ void ospf6_asbr_lsa_add(struct ospf6_lsa *lsa)
 	 *     suppressing the import of summary routes as Type-3
 	 *     summary-LSAs".
 	 */
-	if (ntohs(lsa->header->type) == OSPF6_LSTYPE_TYPE_7
+	if ((type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7)
 	    && external->prefix.prefix_length == 0
 	    && CHECK_FLAG(ospf6->flag, OSPF6_FLAG_ABR)
 	    && (CHECK_FLAG(external->prefix.prefix_options,
@@ -805,18 +805,18 @@ void ospf6_asbr_lsa_add(struct ospf6_lsa *lsa)
 			&route->prefix, route->path.cost, route->path.u.cost_e2,
 			listcount(route->nh_list));
 
-	if (type == OSPF6_LSTYPE_AS_EXTERNAL)
+	if (type == OSPF6_LSTYPE_AS_EXTERNAL || type == OSPF6_LSTYPE_E_AS_EXTERNAL)
 		old = ospf6_route_lookup(&route->prefix, ospf6->route_table);
-	else if (type == OSPF6_LSTYPE_TYPE_7)
+	else if (type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7)
 		old = ospf6_route_lookup(&route->prefix, oa->route_table);
 	if (!old) {
 		if (IS_OSPF6_DEBUG_EXAMIN(AS_EXTERNAL))
 			zlog_debug("%s: Adding new route", __func__);
 		/* Add the new route to ospf6 instance route table. */
-		if (type == OSPF6_LSTYPE_AS_EXTERNAL)
+		if (type == OSPF6_LSTYPE_AS_EXTERNAL || type == OSPF6_LSTYPE_E_AS_EXTERNAL)
 			ospf6_route_add(route, ospf6->route_table);
 		/* Add the route to the area route table */
-		else if (type == OSPF6_LSTYPE_TYPE_7) {
+		else if (type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7) {
 			ospf6_route_add(route, oa->route_table);
 		}
 	} else {
@@ -853,7 +853,7 @@ void ospf6_asbr_lsa_remove(struct ospf6_lsa *lsa,
 	ospf6 = ospf6_get_by_lsdb(lsa);
 	type = ntohs(lsa->header->type);
 
-	if (type == OSPF6_LSTYPE_TYPE_7) {
+	if (type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7) {
 		if (debug)
 			zlog_debug("%s: Withdraw  Type 7 route for %s",
 				   __func__, lsa->name);
@@ -914,7 +914,7 @@ void ospf6_asbr_lsa_remove(struct ospf6_lsa *lsa,
 	prefix.prefixlen = external->prefix.prefix_length;
 	ospf6_prefix_in6_addr(&prefix.u.prefix6, external, &external->prefix);
 
-	if (type == OSPF6_LSTYPE_TYPE_7)
+	if (type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7)
 		route = ospf6_route_lookup(&prefix, oa->route_table);
 	else
 		route = ospf6_route_lookup(&prefix, oa->ospf6->route_table);
@@ -1066,7 +1066,7 @@ void ospf6_asbr_lsa_remove(struct ospf6_lsa *lsa,
 						h_path->origin.adv_router;
 					}
 				} else {
-					if (type == OSPF6_LSTYPE_TYPE_7)
+					if (type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7)
 						ospf6_route_remove(
 							route, oa->route_table);
 					else
@@ -1112,7 +1112,7 @@ void ospf6_asbr_lsa_remove(struct ospf6_lsa *lsa,
 				&route->prefix, route->path.cost, route->path.u.cost_e2,
 				listcount(route->nh_list));
 		}
-		if (type == OSPF6_LSTYPE_TYPE_7)
+		if (type == OSPF6_LSTYPE_TYPE_7 || type == OSPF6_LSTYPE_E_TYPE_7)
 			ospf6_route_remove(route, oa->route_table);
 		else
 			ospf6_route_remove(route, oa->ospf6->route_table);
@@ -1137,11 +1137,33 @@ void ospf6_asbr_lsentry_add(struct ospf6_route *asbr_entry, struct ospf6 *ospf6)
 		return;
 	}
 
-	type = htons(OSPF6_LSTYPE_AS_EXTERNAL);
-	router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
-	for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa)) {
-		if (!OSPF6_LSA_IS_MAXAGE(lsa))
-			ospf6_asbr_lsa_add(lsa);
+	switch (ospf6->extended_lsa_support) {
+	case OSPF6_E_LSA_SUP_BOTH:
+		type = htons(OSPF6_LSTYPE_AS_EXTERNAL);
+		router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
+		for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa)) {
+			if (!OSPF6_LSA_IS_MAXAGE(lsa))
+				ospf6_asbr_lsa_add(lsa);
+		}
+		fallthrough;
+	case OSPF6_E_LSA_SUP_ELSA:
+		type = htons(OSPF6_LSTYPE_E_AS_EXTERNAL);
+		router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
+		for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa)) {
+			if (!OSPF6_LSA_IS_MAXAGE(lsa))
+				ospf6_asbr_lsa_add(lsa);
+		}
+		break;
+        case OSPF6_E_LSA_SUP_LEGACY:
+		fallthrough;
+	default:
+		type = htons(OSPF6_LSTYPE_AS_EXTERNAL);
+		router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
+		for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa)) {
+			if (!OSPF6_LSA_IS_MAXAGE(lsa))
+				ospf6_asbr_lsa_add(lsa);
+		}
+		break;
 	}
 }
 
@@ -1152,10 +1174,28 @@ void ospf6_asbr_lsentry_remove(struct ospf6_route *asbr_entry,
 	uint16_t type;
 	uint32_t router;
 
-	type = htons(OSPF6_LSTYPE_AS_EXTERNAL);
-	router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
-	for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa))
-		ospf6_asbr_lsa_remove(lsa, asbr_entry);
+	switch (ospf6->extended_lsa_support) {
+	case OSPF6_E_LSA_SUP_BOTH:
+		type = htons(OSPF6_LSTYPE_AS_EXTERNAL);
+		router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
+		for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa))
+			ospf6_asbr_lsa_remove(lsa, asbr_entry);
+		fallthrough;
+	case OSPF6_E_LSA_SUP_ELSA:
+		type = htons(OSPF6_LSTYPE_E_AS_EXTERNAL);
+		router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
+		for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa))
+			ospf6_asbr_lsa_remove(lsa, asbr_entry);
+		break;
+        case OSPF6_E_LSA_SUP_LEGACY:
+		fallthrough;
+	default:
+		type = htons(OSPF6_LSTYPE_AS_EXTERNAL);
+		router = ospf6_linkstate_prefix_adv_router(&asbr_entry->prefix);
+		for (ALL_LSDB_TYPED_ADVRTR(ospf6->lsdb, type, router, lsa))
+			ospf6_asbr_lsa_remove(lsa, asbr_entry);
+		break;
+	}
 }
 
 
@@ -1436,9 +1476,11 @@ static void ospf6_asbr_redistribute_unset(struct ospf6 *ospf6,
 void ospf6_asbr_send_externals_to_area(struct ospf6_area *oa)
 {
 	struct ospf6_lsa *lsa, *lsanext;
+	uint16_t type;
 
 	for (ALL_LSDB(oa->ospf6->lsdb, lsa, lsanext)) {
-		if (ntohs(lsa->header->type) == OSPF6_LSTYPE_AS_EXTERNAL) {
+		type = ntohs(lsa->header->type);
+		if (type == OSPF6_LSTYPE_AS_EXTERNAL || type == OSPF6_LSTYPE_E_AS_EXTERNAL) {
 			if (IS_OSPF6_DEBUG_ASBR)
 				zlog_debug("%s: Flooding AS-External LSA %s",
 					   __func__, lsa->name);
@@ -1456,6 +1498,7 @@ void ospf6_asbr_remove_externals_from_area(struct ospf6_area *oa)
 	struct ospf6_area *area;
 	struct ospf6 *ospf6 = oa->ospf6;
 	const struct route_node *iterend;
+	uint16_t type;
 
 	/* skip if router is in other non-stub/non-NSSA areas */
 	for (ALL_LIST_ELEMENTS(ospf6->area_list, node, nnode, area))
@@ -1467,7 +1510,8 @@ void ospf6_asbr_remove_externals_from_area(struct ospf6_area *oa)
 	while (lsa != NULL) {
 		assert(lsa->lock > 1);
 		lsanext = ospf6_lsdb_next(iterend, lsa);
-		if (ntohs(lsa->header->type) == OSPF6_LSTYPE_AS_EXTERNAL)
+		type = ntohs(lsa->header->type);
+		if (type == OSPF6_LSTYPE_AS_EXTERNAL || type == OSPF6_LSTYPE_E_AS_EXTERNAL)
 			ospf6_lsdb_remove(lsa, ospf6->lsdb);
 		lsa = lsanext;
 	}
@@ -1702,14 +1746,19 @@ static void ospf6_asbr_external_lsa_remove_by_id(struct ospf6 *ospf6,
 					 uint32_t id)
 {
 	struct ospf6_lsa *lsa;
+	uint16_t type;
 
-	lsa = ospf6_lsdb_lookup(htons(OSPF6_LSTYPE_AS_EXTERNAL),
+	type = htons(OSPF6_LSTYPE_AS_EXTERNAL);
+	lsa = ospf6_lsdb_lookup(type,
 				htonl(id), ospf6->router_id, ospf6->lsdb);
-	if (!lsa)
-		return;
+	if (lsa)
+		ospf6_external_lsa_purge(ospf6, lsa);
 
-	ospf6_external_lsa_purge(ospf6, lsa);
-
+	type = htons(OSPF6_LSTYPE_E_AS_EXTERNAL);
+	lsa = ospf6_lsdb_lookup(type,
+				htonl(id), ospf6->router_id, ospf6->lsdb);
+	if (lsa)
+		ospf6_external_lsa_purge(ospf6, lsa);
 }
 
 static void
@@ -3135,6 +3184,8 @@ ospf6_originate_summary_lsa(struct ospf6 *ospf6,
 					htonl(info->id), ospf6->router_id,
 					ospf6->lsdb);
 
+	// FIXME: E-LSAs
+
 	aggr_lsa = ospf6_lsdb_lookup(htons(OSPF6_LSTYPE_AS_EXTERNAL),
 				htonl(aggr->id), ospf6->router_id, ospf6->lsdb);
 
@@ -3287,6 +3338,19 @@ static void ospf6_aggr_handle_external_info(void *data)
 					&lsa->refresh);
 			return;
 		}
+
+		lsa = ospf6_lsdb_lookup(htons(OSPF6_LSTYPE_E_AS_EXTERNAL),
+					htonl(info->id), ospf6->router_id,
+					ospf6->lsdb);
+		if (lsa) {
+			if (IS_OSPF6_DEBUG_AGGR)
+				zlog_debug("%s: ELSA found, refresh it",
+					   __func__);
+			EVENT_OFF(lsa->refresh);
+			event_add_event(master, ospf6_lsa_refresh, lsa, 0,
+					&lsa->refresh);
+			return;
+		}
 	}
 
 	info->id  = ospf6->external_id++;
@@ -3322,6 +3386,7 @@ ospf6_handle_external_aggr_modify(struct ospf6 *ospf6,
 	route_tag_t tag = 0;
 	int mtype;
 
+	// FIXME
 	lsa = ospf6_lsdb_lookup(
 		htons(OSPF6_LSTYPE_AS_EXTERNAL),
 		htonl(aggr->id), ospf6->router_id,
@@ -3522,6 +3587,21 @@ static void ospf6_handle_aggregated_exnl_rt(struct ospf6 *ospf6,
 	assert(info);
 
 	lsa = ospf6_lsdb_lookup(htons(OSPF6_LSTYPE_AS_EXTERNAL),
+				htonl(info->id), ospf6->router_id, ospf6->lsdb);
+	if (lsa) {
+		ext_lsa = lsa_after_header(lsa->header);
+
+		if (rt->prefix.prefixlen != ext_lsa->prefix.prefix_length)
+			return;
+
+		ospf6_external_lsa_purge(ospf6, lsa);
+
+		/* Resetting the ID of route */
+		rt->path.origin.id = 0;
+		info->id = 0;
+	}
+
+	lsa = ospf6_lsdb_lookup(htons(OSPF6_LSTYPE_E_AS_EXTERNAL),
 				htonl(info->id), ospf6->router_id, ospf6->lsdb);
 	if (lsa) {
 		ext_lsa = lsa_after_header(lsa->header);
