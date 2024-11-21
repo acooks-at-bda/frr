@@ -4,55 +4,55 @@
       "areaId":"2",
       "lsa":[
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"4.4.4.4"
         },
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"5.5.5.5"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::4\/128"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::2\/128"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::3\/128"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::6\/128"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::1\/128"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::7\/128"
         },
         {
-          "type":"IAR",
+          "type":"EIAR",
           "advRouter":"4.4.4.4",
           "payload":"1.1.1.1"
         },
         {
-          "type":"IAR",
+          "type":"EIAR",
           "advRouter":"4.4.4.4",
           "payload":"7.7.7.7"
         },
         {
-          "type":"INP",
+          "type":"EINP",
           "advRouter":"5.5.5.5",
           "payload":"2001:db8:1000::5\/128"
         }
@@ -65,11 +65,11 @@
       "interface":"eth-rt4",
       "lsa":[
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"4.4.4.4"
         },
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"5.5.5.5"
         }
       ]
@@ -85,12 +85,12 @@
     {
       "lsa":[
         {
-          "type":"ASE",
+          "type":"EASE",
           "advRouter":"1.1.1.1",
           "payload":"2001:db8:1000::1\/128"
         },
         {
-          "type":"ASE",
+          "type":"EASE",
           "advRouter":"7.7.7.7",
           "payload":"2001:db8:1000::7\/128"
         }

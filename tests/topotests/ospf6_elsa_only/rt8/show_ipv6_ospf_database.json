@@ -4,18 +4,6 @@
               "areaId":"4",
               "lsa":[
                 {
-                  "type":"Rtr",
-                  "advRouter":"4.4.4.4"
-                },
-                {
-                  "type":"Rtr",
-                  "advRouter":"8.8.8.8"
-                },
-                {
-                  "type":"Rtr",
-                  "advRouter":"9.9.9.9"
-                },
-                {
                   "type":"ERtr",
                   "advRouter":"4.4.4.4"
                 },
@@ -26,21 +14,6 @@
                 {
                   "type":"ERtr",
                   "advRouter":"9.9.9.9"
-                },
-                {
-                  "type":"Net",
-                  "advRouter":"4.4.4.4",
-                  "payload":"4.4.4.4"
-                },
-                {
-                  "type":"Net",
-                  "advRouter":"4.4.4.4",
-                  "payload":"8.8.8.8"
-                },
-                {
-                  "type":"Net",
-                  "advRouter":"4.4.4.4",
-                  "payload":"9.9.9.9"
                 },
                 {
                   "type":"ENet",
@@ -58,64 +31,54 @@
                   "payload":"9.9.9.9"
                 },
                 {
-                  "type":"IAP",
+                  "type":"EIAP",
                   "advRouter":"4.4.4.4",
                   "payload":"2001:db8:1000::4/128"
                 },
                 {
-                  "type":"IAP",
+                  "type":"EIAP",
                   "advRouter":"4.4.4.4",
                   "payload":"2001:db8:1000::2/128"
                 },
                 {
-                  "type":"IAP",
+                  "type":"EIAP",
                   "advRouter":"4.4.4.4",
                   "payload":"2001:db8:1000::3/128"
                 },
                 {
-                  "type":"IAP",
+                  "type":"EIAP",
                   "advRouter":"4.4.4.4",
                   "payload":"2001:db8:1000::6/128"
                 },
                 {
-                  "type":"IAP",
+                  "type":"EIAP",
                   "advRouter":"4.4.4.4",
                   "payload":"2001:db8:1000::1/128"
                 },
                 {
-                  "type":"IAP",
+                  "type":"EIAP",
                   "advRouter":"4.4.4.4",
                   "payload":"2001:db8:1000::7/128"
                 },
                 {
-                  "type":"IAR",
+                  "type":"EIAR",
                   "advRouter":"4.4.4.4",
                   "payload":"1.1.1.1"
                 },
                 {
-                  "type":"IAR",
+                  "type":"EIAR",
                   "advRouter":"4.4.4.4",
                   "payload":"7.7.7.7"
                 },
                 {
-                  "type":"INP",
+                  "type":"EINP",
                   "advRouter":"8.8.8.8",
                   "payload":"2001:db8:1000::8/128"
                 },
                 {
-                  "type":"INP",
+                  "type":"EINP",
                   "advRouter":"9.9.9.9",
                   "payload":"2001:db8:1000::9/128"
-                },
-                {
-                  "type":"EINP",
-                  "advRouter":"8.8.8.8",
-                  "payload":"2001:db8:1000::8"
-                },
-                {
-                  "type":"EINP",
-                  "advRouter":"9.9.9.9",
-                  "payload":"2001:db8:1000::9"
                 }
               ]
             }
@@ -125,18 +88,6 @@
               "areaId":"4",
               "interface":"eth-rt8-br9",
               "lsa":[
-                {
-                  "type":"Lnk",
-                  "advRouter":"4.4.4.4"
-                },
-                {
-                  "type":"Lnk",
-                  "advRouter":"8.8.8.8"
-                },
-                {
-                  "type":"Lnk",
-                  "advRouter":"9.9.9.9"
-                },
                 {
                   "type":"ELnk",
                   "advRouter":"4.4.4.4"
@@ -161,22 +112,22 @@
             {
               "lsa":[
                 {
-                  "type":"ASE",
+                  "type":"EASE",
                   "advRouter":"1.1.1.1",
                   "payload":"2001:db8:1000::1/128"
                 },
                 {
-                  "type":"ASE",
+                  "type":"EASE",
                   "advRouter":"7.7.7.7",
                   "payload":"2001:db8:1000::7/128"
                 },
                 {
-                  "type":"ASE",
+                  "type":"EASE",
                   "advRouter":"8.8.8.8",
                   "payload":"2001:db8:1000::8/128"
                 },
                 {
-                  "type":"ASE",
+                  "type":"EASE",
                   "advRouter":"9.9.9.9",
                   "payload":"2001:db8:1000::9/128"
                 }

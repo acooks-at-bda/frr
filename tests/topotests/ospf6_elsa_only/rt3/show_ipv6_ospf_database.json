@@ -4,71 +4,71 @@
       "areaId":"0",
       "lsa":[
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"2.2.2.2"
         },
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"3.3.3.3"
         },
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"3.3.3.3"
         },
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"3.3.3.3"
         },
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"4.4.4.4"
         },
         {
-          "type":"Rtr",
+          "type":"ERtr",
           "advRouter":"6.6.6.6"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"2.2.2.2",
           "payload":"2001:db8:1000::1\/128"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::5\/128"
         },
         {
-          "type":"IAP",
+          "type":"EIAP",
           "advRouter":"6.6.6.6",
           "payload":"2001:db8:1000::7\/128"
         },
         {
-          "type":"IAR",
+          "type":"EIAR",
           "advRouter":"2.2.2.2",
           "payload":"1.1.1.1"
         },
         {
-          "type":"IAR",
+          "type":"EIAR",
           "advRouter":"6.6.6.6",
           "payload":"7.7.7.7"
         },
         {
-          "type":"INP",
+          "type":"EINP",
           "advRouter":"2.2.2.2",
           "payload":"2001:db8:1000::2\/128"
         },
         {
-          "type":"INP",
+          "type":"EINP",
           "advRouter":"3.3.3.3",
           "payload":"2001:db8:1000::3\/128"
         },
         {
-          "type":"INP",
+          "type":"EINP",
           "advRouter":"4.4.4.4",
           "payload":"2001:db8:1000::4\/128"
         },
         {
-          "type":"INP",
+          "type":"EINP",
           "advRouter":"6.6.6.6",
           "payload":"2001:db8:1000::6\/128"
         }
@@ -81,11 +81,11 @@
       "interface":"eth-rt2",
       "lsa":[
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"2.2.2.2"
         },
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"3.3.3.3"
         }
       ]
@@ -95,11 +95,11 @@
       "interface":"eth-rt4",
       "lsa":[
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"3.3.3.3"
         },
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"4.4.4.4"
         }
       ]
@@ -109,11 +109,11 @@
       "interface":"eth-rt6",
       "lsa":[
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"3.3.3.3"
         },
         {
-          "type":"Lnk",
+          "type":"ELnk",
           "advRouter":"6.6.6.6"
         }
       ]
@@ -129,12 +129,12 @@
     {
       "lsa":[
         {
-          "type":"ASE",
+          "type":"EASE",
           "advRouter":"1.1.1.1",
           "payload":"2001:db8:1000::1\/128"
         },
         {
-          "type":"ASE",
+          "type":"EASE",
           "advRouter":"7.7.7.7",
           "payload":"2001:db8:1000::7\/128"
         }
