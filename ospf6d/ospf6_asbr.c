@@ -641,7 +641,10 @@ void ospf6_asbr_lsa_add(struct ospf6_lsa *lsa)
 	type = ntohs(lsa->header->type);
 	oa = lsa->lsdb->data;
 
-	external = lsa_after_header(lsa->header);
+	if (OSPF6_LSA_IS_TYPE(NETWORK, lsa))
+		external = lsa_after_header(lsa->header);
+	else /* E_NETWORK */
+		external = lsa_after_header(lsa->header) + sizeof(struct tlv_header);
 
 	if (IS_OSPF6_DEBUG_EXAMIN(AS_EXTERNAL))
 		zlog_debug("Calculate AS-External route for %s", lsa->name);
@@ -799,7 +802,8 @@ void ospf6_asbr_lsa_add(struct ospf6_lsa *lsa)
 	if (IS_OSPF6_DEBUG_EXAMIN(AS_EXTERNAL))
 		zlog_debug(
 			"%s: %s %u route add %pFX cost %u(%u) nh %u", __func__,
-			(type == OSPF6_LSTYPE_AS_EXTERNAL) ? "AS-External"
+			(type == OSPF6_LSTYPE_AS_EXTERNAL ||
+			type == OSPF6_LSTYPE_E_AS_EXTERNAL) ? "AS-External"
 							   : "NSSA",
 			(route->path.type == OSPF6_PATH_TYPE_EXTERNAL1) ? 1 : 2,
 			&route->prefix, route->path.cost, route->path.u.cost_e2,
